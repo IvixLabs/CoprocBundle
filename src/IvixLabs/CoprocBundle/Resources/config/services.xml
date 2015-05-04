@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="coproc.factory" class="IvixLabs\CoprocBundle\Factory\CoprocFactory">
+            <call method="setKernel">
+                <argument type="service" id="kernel"/>
+            </call>
+            <call method="setCache">
+                <argument type="service" id="doctrine_cache.providers.coproc_cache"/>
+            </call>
+        </service>
+        <service id="coproc.command.launcher" class="IvixLabs\CoprocBundle\Command\CoprocSlaveLauncherCommand">
+            <call method="setCoprocFactory">
+                <argument type="service" id="coproc.factory"/>
+            </call>
+            <tag name="console.command"/>
+        </service>
+    </services>
+</container>

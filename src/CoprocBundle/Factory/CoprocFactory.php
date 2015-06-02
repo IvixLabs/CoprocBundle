@@ -74,7 +74,7 @@ class CoprocFactory
         $env = $this->kernel->getEnvironment();
         $debug = $this->kernel->isDebug();
 
-        $cmd = "php $dir/console coproc:slave-launcher $name --env=$env";
+        $cmd = "php $dir/console ivixlabs:coproc:slave-launcher $name --env=$env";
         if (!$debug) {
             $cmd .= ' --no-debug';
         }

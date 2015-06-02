@@ -9,7 +9,7 @@
                 <argument type="service" id="kernel"/>
             </call>
             <call method="setCache">
-                <argument type="service" id="doctrine_cache.providers.coproc_cache"/>
+                <argument type="service" id="doctrine_cache.providers.ivixlabs_coproc_cache"/>
             </call>
         </service>
         <service id="ivixlabs.coproc.command.launcher" class="IvixLabs\CoprocBundle\Command\CoprocSlaveLauncherCommand">

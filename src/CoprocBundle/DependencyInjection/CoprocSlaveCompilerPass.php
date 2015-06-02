@@ -13,7 +13,7 @@ class CoprocSlaveCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $serviceId = 'coproc.factory';
+        $serviceId = 'ivixlabs.coproc.factory';
 
 
         if (!$container->hasDefinition($serviceId)) {
@@ -22,7 +22,7 @@ class CoprocSlaveCompilerPass implements CompilerPassInterface
 
         $definition = $container->getDefinition($serviceId);
 
-        $tag = 'coproc.slave';
+        $tag = 'ivixlabs.coproc.slave';
 
         $services = $container->findTaggedServiceIds($tag);
         foreach ($services as $id => $tagAttributes) {

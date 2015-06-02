@@ -18,7 +18,7 @@ class CoprocSlaveLauncherCommand extends Command
 
     protected function configure()
     {
-        $this->setName('coproc:slave-launcher')
+        $this->setName('ivixlabs:coproc:slave-launcher')
             ->setDescription('Launch copro slaves')
             ->addArgument('name', InputArgument::REQUIRED);
     }

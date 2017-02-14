@@ -5,7 +5,6 @@ use IvixLabs\CoprocBundle\Factory\CoprocFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
 class CoprocSlaveLauncherCommand extends Command
@@ -16,10 +15,17 @@ class CoprocSlaveLauncherCommand extends Command
      */
     private $coprocFactory;
 
+    public function __construct(CoprocFactory $coprocFactory)
+    {
+        parent::__construct();
+        $this->coprocFactory = $coprocFactory;
+    }
+
+
     protected function configure()
     {
         $this->setName('ivixlabs:coproc:slave-launcher')
-            ->setDescription('Launch copro slaves')
+            ->setDescription('Launch coproc slaves')
             ->addArgument('name', InputArgument::REQUIRED);
     }
 
@@ -28,10 +34,5 @@ class CoprocSlaveLauncherCommand extends Command
         $slaveName = $input->getArgument('name');
         $slave = $this->coprocFactory->getSlave($slaveName);
         $slave->listen();
-    }
-
-    public function setCoprocFactory(CoprocFactory $coprocFactory)
-    {
-        $this->coprocFactory = $coprocFactory;
     }
 }

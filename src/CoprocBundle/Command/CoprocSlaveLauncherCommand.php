@@ -1,7 +1,7 @@
 <?php
 namespace IvixLabs\CoprocBundle\Command;
 
-use IvixLabs\CoprocBundle\Factory\CoprocFactory;
+use IvixLabs\CoprocBundle\Factory\SlaveFactory;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -9,18 +9,16 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 class CoprocSlaveLauncherCommand extends Command
 {
-
     /**
-     * @var CoprocFactory
+     * @var SlaveFactory
      */
-    private $coprocFactory;
+    private $slaveFactory;
 
-    public function __construct(CoprocFactory $coprocFactory)
+    public function __construct(SlaveFactory $slaveFactory)
     {
         parent::__construct();
-        $this->coprocFactory = $coprocFactory;
+        $this->slaveFactory = $slaveFactory;
     }
-
 
     protected function configure()
     {
@@ -32,7 +30,7 @@ class CoprocSlaveLauncherCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $slaveName = $input->getArgument('name');
-        $slave = $this->coprocFactory->getSlave($slaveName);
+        $slave = $this->slaveFactory->createSlave($slaveName);
         $slave->listen();
     }
 }

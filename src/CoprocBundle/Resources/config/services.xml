@@ -4,13 +4,21 @@
            xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
            xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
     <services>
-        <service id="ivixlabs.coproc.factory" class="IvixLabs\CoprocBundle\Factory\CoprocFactory">
+        <service id="ivixlabs.coproc.factory.demux" class="IvixLabs\CoprocBundle\Factory\DemuxFactory" public="true">
+            <argument type="service" id="ivixlabs.coproc.manager.callback_config"/>
             <argument>%ivixlabs.coproc.console_path%</argument>
             <argument type="service" id="kernel"/>
         </service>
+
+        <service id="ivixlabs.coproc.factory.slave" class="IvixLabs\CoprocBundle\Factory\SlaveFactory">
+            <argument type="service" id="ivixlabs.coproc.manager.callback_config"/>
+        </service>
+
+        <service id="ivixlabs.coproc.manager.callback_config" class="IvixLabs\CoprocBundle\Manager\CallbackConfigManager"></service>
+
         <service id="ivixlabs.coproc.command.launcher" class="IvixLabs\CoprocBundle\Command\CoprocSlaveLauncherCommand">
             <tag name="console.command"/>
-            <argument type="service" id="ivixlabs.coproc.factory"/>
+            <argument type="service" id="ivixlabs.coproc.factory.slave"/>
         </service>
     </services>
 </container>

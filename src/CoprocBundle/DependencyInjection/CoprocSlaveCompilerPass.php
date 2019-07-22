@@ -3,7 +3,9 @@ namespace IvixLabs\CoprocBundle\DependencyInjection;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use IvixLabs\CoprocBundle\Annotation\Slave;
-use IvixLabs\CoprocBundle\Factory\CoprocFactory;
+use IvixLabs\CoprocBundle\Factory\DemuxFactory;
+use IvixLabs\CoprocBundle\Factory\SlaveFactory;
+use IvixLabs\CoprocBundle\Manager\CallbackConfigManager;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -16,14 +18,9 @@ class CoprocSlaveCompilerPass implements CompilerPassInterface
      */
     public function process(ContainerBuilder $container)
     {
-        $serviceId = 'ivixlabs.coproc.factory';
 
-
-        if (!$container->hasDefinition($serviceId)) {
-            return;
-        }
-
-        $definition = $container->getDefinition($serviceId);
+        $callbackConfigManager = $container->getDefinition('ivixlabs.coproc.manager.callback_config');
+        $slaveFactory = $container->getDefinition('ivixlabs.coproc.factory.slave');
 
         $tag = 'ivixlabs.coproc.slave';
 
@@ -37,9 +34,8 @@ class CoprocSlaveCompilerPass implements CompilerPassInterface
             $coprocServices[$id] = new Reference($id);
         }
 
-
-        $definition->addArgument($coprocServices);
-        $definition->addArgument($callbacks);
+        $slaveFactory->addArgument($coprocServices);
+        $callbackConfigManager->addArgument($callbacks);
     }
 
     private function initCallbacks($id, $className, array &$callbacks)
@@ -64,18 +60,18 @@ class CoprocSlaveCompilerPass implements CompilerPassInterface
                         throw new \RuntimeException('Duplication slave name: ' . $slaveName);
                     }
 
-                    $callback = array(CoprocFactory::SLAVE_SERVICE_ID => $id, CoprocFactory::SLAVE_METHOD_NAME => $method->name);
+                    $callback = array(CallbackConfigManager::SLAVE_SERVICE_ID => $id, CallbackConfigManager::SLAVE_METHOD_NAME => $method->name);
 
                     if ($annotation->size !== null) {
-                        $callback[CoprocFactory::DEMUX_SIZE] = $annotation->size;
+                        $callback[CallbackConfigManager::DEMUX_SIZE] = $annotation->size;
                     }
 
                     if ($annotation->maxCycles !== null) {
-                        $callback[CoprocFactory::DEMUX_MAX_CYCLES] = $annotation->maxCycles;
+                        $callback[CallbackConfigManager::DEMUX_MAX_CYCLES] = $annotation->maxCycles;
                     }
 
                     if ($annotation->maxMessages !== null) {
-                        $callback[CoprocFactory::DEMUX_MAX_MESSAGES] = $annotation->maxMessages;
+                        $callback[CallbackConfigManager::DEMUX_MAX_MESSAGES] = $annotation->maxMessages;
                     }
 
                     $callbacks[$slaveName] = $callback;

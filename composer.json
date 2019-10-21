@@ -1,6 +1,7 @@
 {
   "name": "ivixlabs/coproc-bundle",
-  "type": "library",
+  "version": "1.0.0",
+  "type": "symfony-bundle",
   "description": "CoprocBundle for Symfony2",
   "keywords": [
     "CoprocBundle",
@@ -18,7 +19,7 @@
     }
   ],
   "require": {
-    "php": ">=5.3.0",
+    "php": ">=5.5.0",
     "ivixlabs/coproc": "dev-master"
   },
   "autoload": {
